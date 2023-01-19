@@ -10,7 +10,7 @@ $(document).ready(function () {
   timeBlocks.each(function () {
     var timeBlockId = $(this).attr('id')
 
-    if (currentHour > timeBlockId) {
+    if (currentHour > timeBlockId) { //add and remove class to identify past present and future
       $(this).addClass('past')
     } else if (currentHour == timeBlockId) {
       $(this).removeClass('past')
@@ -22,7 +22,7 @@ $(document).ready(function () {
     }
   })
 
-  $(".saveBtn").on("click", function () {
+  $(".saveBtn").on("click", function () { //add and remove class to show and hide text after 2 seconds
     $('#notify').addClass('show');
     setTimeout(function(){
       $('#notify').removeClass('show');
@@ -36,7 +36,7 @@ $(document).ready(function () {
       value: textValue
     }
 
-    var storage = JSON.parse(localStorage.getItem('scheduleTask')) || []
+    var storage = JSON.parse(localStorage.getItem('scheduleTask')) || [] // or statement to store item into local storage
 
     storage.push(data)
     localStorage.setItem('scheduleTask', JSON.stringify(storage))
@@ -45,13 +45,13 @@ $(document).ready(function () {
 
   })
 
-  function showHistory() {
+  function showHistory() { // using if statement to store data into local storage
     var storage = JSON.parse(localStorage.getItem('scheduleTask'))
     if (storage === null) {
       return
     } else {
 
-      timeBlocks.each(function () {
+      timeBlocks.each(function () { //using a for loop to iterate through an array
         var blockId = $(this).attr('id')
         for (var i = 0; i < storage.length; i++) {
           if (blockId === storage[i].id) {
