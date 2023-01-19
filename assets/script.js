@@ -56,8 +56,8 @@ $(document).ready(function () {
         for (var i = 0; i < storage.length; i++) {
           if (blockId === storage[i].id) {
             var textValue = storage[i].value
-            $(`#${i + 9}`).text(textValue)
-            $('#${blockid}').text(textValue)
+          //  $(`#${i + 9}`).text(textValue)
+            $(`#${blockId}`).text(textValue)
           }
 
         }
