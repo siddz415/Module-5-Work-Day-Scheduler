@@ -2,14 +2,13 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(document).ready(function () {
-  $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm:ss a")); //display current date and time
+  $("#currentDay").text(dayjs().format("MMMM D YYYY, h:mm:ss a")); //display current date and time
 
-  var currentHour = moment().hours()
+  var currentHour = dayjs().format('H')
   var timeBlocks = $('textarea')
 
   timeBlocks.each(function () {
-    var timeBlockId = $(this).attr('id')
-
+    var timeBlockId = Number($(this).attr('id').slice(6))
     if (currentHour > timeBlockId) { //add and remove class to identify past present and future
       $(this).addClass('past')
     } else if (currentHour == timeBlockId) {
@@ -24,7 +23,7 @@ $(document).ready(function () {
 
   $(".saveBtn").on("click", function () { //add and remove class to show and hide text after 2 seconds
     $('#notify').addClass('show');
-    setTimeout(function(){
+    setTimeout(function () {
       $('#notify').removeClass('show');
     }, 2000);
     var clickedBtn = $(this).attr('id')
@@ -36,42 +35,31 @@ $(document).ready(function () {
       value: textValue
     }
 
-    var storage = JSON.parse(localStorage.getItem('scheduleTask')) || [] // or statement to store item into local storage
 
-    storage.push(data)
-    localStorage.setItem('scheduleTask', JSON.stringify(storage))
+
+
+    localStorage.setItem('hour-' + clickedBtn.slice(4), textValue)
 
     showHistory()
 
   })
 
-  function showHistory() { // using if statement to store data into local storage
-    var storage = JSON.parse(localStorage.getItem('scheduleTask'))
-    if (storage === null) {
-      return
-    } else {
+  function showHistory() {
+    var timeBlocks = $('textarea')
+    timeBlocks.each(function (block) { //using a for loop to iterate through an array
+      var hourInput = $("#input-" + (block + 9))
+      var storedAppt = localStorage.getItem('hour-' + (block + 9))
+      hourInput.text(storedAppt)
 
-      timeBlocks.each(function () { //using a for loop to iterate through an array
-        var blockId = $(this).attr('id')
-        for (var i = 0; i < storage.length; i++) {
-          if (blockId === storage[i].id) {
-            var textValue = storage[i].value
-          //  $(`#${i + 9}`).text(textValue)
-            $(`#${blockId}`).text(textValue)
-          }
-
-        }
-      })
-
-    }
+    })
 
 
 
   }
 
   showHistory()
-  
-}) 
+
+})
 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
